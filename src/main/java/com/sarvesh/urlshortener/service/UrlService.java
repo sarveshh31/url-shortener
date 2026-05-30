@@ -7,7 +7,6 @@ import com.sarvesh.urlshortener.repository.UrlRepository;
 import com.sarvesh.urlshortener.util.Base62Encoder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,6 +19,7 @@ public class UrlService {
     private final UrlRepository urlRepository;
     private final Base62Encoder encoder;
     private final CacheService cacheService;
+    private final AsyncService asyncService;
 
     @Value("${app.base-url}")
     private String baseUrl;
@@ -60,14 +60,11 @@ public class UrlService {
 
     public String resolve(String code) {
 
-        // 1. Check Redis cache first
+//        // 1. Check Redis cache first
         String cached = cacheService.getCachedUrl(code);
 
         if (cached != null) {
-
-            // update clicks asynchronously
-            updateClickCountAsync(code);
-
+            asyncService.updateClickCount(code);
             return cached;
         }
 
@@ -114,16 +111,5 @@ public class UrlService {
         while (urlRepository.existsByShortCode(code));
 
         return code;
-    }
-
-    @Async
-    public void updateClickCountAsync(String code) {
-
-        urlRepository.findByShortCode(code).ifPresent(url -> {
-
-            url.setClickCount(url.getClickCount() + 1);
-
-            urlRepository.save(url);
-        });
     }
 }
