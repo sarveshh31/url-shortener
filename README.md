@@ -275,8 +275,8 @@ When running without Docker Compose, set these:
 
 ```properties
 SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/url_shortener_db
-SPRING_DATASOURCE_USERNAME=postgres
-SPRING_DATASOURCE_PASSWORD=postgres
+SPRING_DATASOURCE_USERNAME=<your_db_username>
+SPRING_DATASOURCE_PASSWORD=<your_db_password>
 SPRING_DATA_REDIS_HOST=localhost
 SPRING_KAFKA_BOOTSTRAP_SERVERS=localhost:9092
 APP_JWT_SECRET=your_secret_key_min_32_chars
@@ -288,5 +288,3 @@ APP_JWT_EXPIRATION=86400000
 ## Author
 
 **Sarvesh Tiwari**
-B.Tech Information Technology · RCOEM Nagpur · 2026
-[LeetCode 1740](https://leetcode.com/u/sarvesh_3108/) · AWS Cloud Practitioner · OCI GenAI Professional
